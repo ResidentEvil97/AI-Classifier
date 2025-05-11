@@ -1,1 +1,7 @@
+models/results/
+data/news/merged_dataset.csv
+*.pt
+*.pth
+*.bin
+__pycache__/
 keys.env

@@ -68,15 +68,6 @@ joblib.dump(clf, "models/binary_classifier.pkl")
 joblib.dump(vectorizer, "models/tfidf_vectorizer.pkl")
 print("✅ Binary model and vectorizer saved.")
 
-# Confusion matrix
-cm_bin = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm_bin, annot=True, fmt="d", xticklabels=["Human", "AI"], yticklabels=["Human", "AI"])
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title("Confusion Matrix (Human vs AI)")
-plt.tight_layout()
-plt.show()
-
 # ====== MULTICLASS BERT CLASSIFIER ======
 df_ai = df_all[df_all['binary_label'] == 1][['text', 'label']].copy()
 label2id = {'gpt': 0, 'claude': 1, 'mistral': 2}
@@ -155,6 +146,15 @@ tokenizer.save_pretrained("models/multiclass_bert")
 print("✅ BERT model and tokenizer saved.")
 
 # ====== EVALUATION VISUALIZATIONS ======
+# Confusion matrix for binary classifier
+cm_bin = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm_bin, annot=True, fmt="d", xticklabels=["Human", "AI"], yticklabels=["Human", "AI"])
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix (Human vs AI)")
+plt.tight_layout()
+plt.show()
+
 y_true_named = [id2label[i] for i in test_ds["label"]]
 y_pred_named = [id2label[i] for i in pred_labels]
 
