@@ -23,14 +23,14 @@ import anthropic
 from dotenv import load_dotenv
 
 # Load environment variables from .env
-load_dotenv()
+load_dotenv("keys.env")
 
 # ========== CONFIG ==========
 openai.api_key = os.getenv("OPENAI_API_KEY")
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
 
-PROMPT_PATH = "data/news/human_sampled_70.csv"
+PROMPT_PATH = "data/news/human_sampled_130.csv"
 OUTPUT_DIR = "data/news"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -66,7 +66,7 @@ def generate_gpt(prompts):
         except Exception as e:
             reply = f"[ERROR] {e}"
         results.append({'Prompt': prompt, 'GPT4o_Response': reply})
-    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/gpt.csv", index=False)
+    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/gpt_extra.csv", index=False)
 
 # ========== Claude Generation ==========
 def generate_claude(prompts):
@@ -89,7 +89,7 @@ def generate_claude(prompts):
         except Exception as e:
             reply = f"[ERROR] {e}"
         results.append({"Prompt": prompt, "Claude_Response": reply})
-    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/claude.csv", index=False)
+    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/claude_extra.csv", index=False)
 
 # ========== Mistral Generation ==========
 def generate_mistral(prompts):
@@ -124,7 +124,7 @@ def generate_mistral(prompts):
             reply = f"[ERROR] {e}"
         results.append({"Prompt": prompt, "Mistral_Response": reply})
         time.sleep(1)
-    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/mistral.csv", index=False)
+    pd.DataFrame(results).to_csv(f"{OUTPUT_DIR}/mistral_extra.csv", index=False)
 
 # ========== Run All ==========
 if __name__ == "__main__":
