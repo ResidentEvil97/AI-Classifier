@@ -66,7 +66,7 @@ print("Top Human indicators:", [feature_names[i] for i in np.argsort(coefs)[:10]
 os.makedirs("models", exist_ok=True)
 joblib.dump(clf, "models/binary_classifier.pkl")
 joblib.dump(vectorizer, "models/tfidf_vectorizer.pkl")
-print("✅ Binary model and vectorizer saved.")
+print("Binary model and vectorizer saved.")
 
 # ====== MULTICLASS BERT CLASSIFIER ======
 df_ai = df_all[df_all['binary_label'] == 1][['text', 'label']].copy()
@@ -143,7 +143,7 @@ print(classification_report(test_ds["label"], pred_labels, target_names=id2label
 # Save BERT model and tokenizer
 model.save_pretrained("models/multiclass_bert")
 tokenizer.save_pretrained("models/multiclass_bert")
-print("✅ BERT model and tokenizer saved.")
+print("BERT model and tokenizer saved.")
 
 # ====== EVALUATION VISUALIZATIONS ======
 # Confusion matrix for binary classifier

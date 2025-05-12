@@ -131,4 +131,4 @@ if __name__ == "__main__":
     generate_gpt(prompts)
     generate_claude(prompts)
     generate_mistral(prompts)
-    print("✅ All generations complete and saved.")
+    print("All generations complete and saved.")
