@@ -1,5 +1,5 @@
 """
-classify.py
+model_trainer.py
 
 Performs:
 1. Binary classification (Human vs. AI) using TF-IDF + Logistic Regression.

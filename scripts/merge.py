@@ -43,6 +43,6 @@ os.makedirs("data/news", exist_ok=True)
 merged.to_csv("data/news/merged_dataset.csv", index=False)
 
 # Summary
-print("✅ Final merged dataset saved.")
+print("Final merged dataset saved.")
 print(merged["label"].value_counts())
 print(f"Total examples: {len(merged)}")
