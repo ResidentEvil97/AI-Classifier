@@ -35,8 +35,11 @@ from transformers import (
 from tqdm.auto import tqdm
 import evaluate
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 # ====== LOAD DATA ======
 df_all = pd.read_csv("data/news/merged_dataset.csv")
+df_all["binary_label"] = df_all["label"].apply(lambda x: 0 if x == "human" else 1)
 print(df_all['binary_label'].value_counts())
 
 # ====== BINARY CLASSIFIER ======
@@ -49,7 +52,7 @@ vectorizer = TfidfVectorizer(max_features=5000)
 X_train_vec = vectorizer.fit_transform(X_train)
 X_test_vec = vectorizer.transform(X_test)
 
-clf = LogisticRegression(class_weight='balanced')
+clf = LogisticRegression(class_weight='balanced', solver='saga', max_iter=1000)
 clf.fit(X_train_vec, y_train)
 
 y_pred = clf.predict(X_test_vec)
@@ -82,6 +85,7 @@ test_ds = split_dataset['test']
 model_checkpoint = "bert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=3)
+model.to(device) # switch to GPU
 
 def preprocess_function(examples):
     return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
@@ -112,8 +116,7 @@ class TQDMProgressBar(TrainerCallback):
 
 training_args = TrainingArguments(
     output_dir="models/results",
-    #evaluation_strategy="epoch",
-    num_train_epochs=3,
+    num_train_epochs=5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     weight_decay=0.01,
@@ -144,59 +147,3 @@ print(classification_report(test_ds["label"], pred_labels, target_names=id2label
 model.save_pretrained("models/multiclass_bert")
 tokenizer.save_pretrained("models/multiclass_bert")
 print("BERT model and tokenizer saved.")
-
-# ====== EVALUATION VISUALIZATIONS ======
-# Confusion matrix for binary classifier
-cm_bin = confusion_matrix(y_test, y_pred)
-sns.heatmap(cm_bin, annot=True, fmt="d", xticklabels=["Human", "AI"], yticklabels=["Human", "AI"])
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title("Confusion Matrix (Human vs AI)")
-plt.tight_layout()
-plt.show()
-
-y_true_named = [id2label[i] for i in test_ds["label"]]
-y_pred_named = [id2label[i] for i in pred_labels]
-
-# Confusion matrix
-cm = confusion_matrix(y_true_named, y_pred_named, labels=id2label.values())
-plt.figure(figsize=(6, 5))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-            xticklabels=id2label.values(), yticklabels=id2label.values())
-plt.xlabel("Predicted Label")
-plt.ylabel("True Label")
-plt.title("Confusion Matrix - AI Model Attribution")
-plt.tight_layout()
-plt.show()
-
-# Bar chart: Precision, Recall, F1
-precision, recall, f1, support = precision_recall_fscore_support(
-    y_true_named, y_pred_named, labels=id2label.values(), zero_division=0)
-
-metrics_df = pd.DataFrame({
-    "Model": list(id2label.values()),
-    "Precision": precision,
-    "Recall": recall,
-    "F1-Score": f1
-})
-
-metrics_df.set_index("Model").plot(kind="bar", figsize=(8, 6), rot=0, colormap="viridis")
-plt.title("Precision, Recall, and F1-score by AI Model")
-plt.ylabel("Score")
-plt.ylim(0, 1.1)
-plt.grid(axis='y', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.show()
-
-# Confidence Distribution
-probs = torch.nn.functional.softmax(torch.tensor(predictions.predictions), dim=1).numpy()
-max_probs = probs.max(axis=1)
-
-plt.figure(figsize=(6, 4))
-sns.histplot(max_probs, bins=20, kde=True, color="skyblue")
-plt.title("Prediction Confidence Distribution")
-plt.xlabel("Max Probability (Confidence)")
-plt.ylabel("Frequency")
-plt.grid(axis='y', linestyle='--', linewidth=0.5)
-plt.tight_layout()
-plt.show()
