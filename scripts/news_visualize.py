@@ -35,7 +35,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 X_test_vec = vectorizer.transform(X_test)
 y_pred = clf.predict(X_test_vec)
 
-print("📊 Binary Classification Report:")
+print("Binary Classification Report:")
 print(classification_report(y_test, y_pred, target_names=["Human", "AI"]))
 
 cm_bin = confusion_matrix(y_test, y_pred)
@@ -77,7 +77,7 @@ y_true = test_ds["label"]
 y_pred_named = [id2label[i] for i in preds]
 y_true_named = [id2label[i] for i in y_true]
 
-print("📊 Multiclass Attribution Report:")
+print("Multiclass Attribution Report:")
 print(classification_report(y_true, preds, target_names=id2label.values()))
 
 # Confusion matrix

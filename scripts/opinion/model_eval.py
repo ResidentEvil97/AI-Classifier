@@ -1,5 +1,5 @@
 """
-eval_opinion_generalization.py
+model_eval.py
 
 Evaluates your trained binary and multiclass classifiers on the opinion dataset
 (merged human + AI articles), to test cross-domain generalization.
@@ -61,7 +61,7 @@ df_ai["multiclass_pred"] = preds
 df_ai["multiclass_true"] = df_ai["label"].map({"gpt": 0, "claude": 1, "mistral": 2})
 
 # ==== Evaluation ====
-print("📊 Multiclass Attribution Report (Opinion Domain):")
+print("Multiclass Attribution Report (Opinion Domain):")
 print(classification_report(df_ai["multiclass_true"], df_ai["multiclass_pred"], target_names=id2label.values()))
 
 # ==== Confusion Matrix (Multiclass) ====
