@@ -1,5 +1,5 @@
 """
-model_eval.py
+news_visualize.py
 
 Loads trained models and test data, runs evaluation + plots:
 - Binary confusion matrix
@@ -42,7 +42,7 @@ cm_bin = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm_bin, annot=True, fmt="d", xticklabels=["Human", "AI"], yticklabels=["Human", "AI"])
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
-plt.title("Confusion Matrix (Human vs AI)")
+plt.title("Confusion Matrix (Human vs AI) for News Articles")
 plt.tight_layout()
 plt.show()
 
@@ -88,7 +88,7 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
             xticklabels=labels, yticklabels=labels)
 plt.xlabel("Predicted Label")
 plt.ylabel("True Label")
-plt.title("Confusion Matrix - AI Model Attribution")
+plt.title("Confusion Matrix - AI Model Attribution in News Articles")
 plt.tight_layout()
 plt.show()
 
