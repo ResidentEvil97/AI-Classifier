@@ -1,30 +1,40 @@
 # AI Authorship Attribution
 
-This repository contains the code and resources for training a machine learning model to distinguish between human-written and AI-generated text and attribute the text to specific AI models (GPT-4o, Claude-3-haiku-20240307, Mistral-7B-Instruct-v0.2).
+This repository contains the code and resources for training machine learning models to classify text as human-written or AI-generated and to attribute AI-generated text to specific models (GPT-4o, Claude-3-haiku-20240307, Mistral-7B-Instruct-v0.2).
 
 ## Overview
 
-This project explores the ability of current machine learning techniques to detect AI-generated content and attribute it to specific models. The main goal is to investigate how well existing attribution methods perform with newer, more sophisticated large language models (LLMs).
+The tool uses trained classifiers to:
+
+- Classify text as human-written or AI-generated.
+- Attribute AI-generated text to one of three models: GPT-4o, Claude, or Mistral.
+- Models were trained on news and opinion articles.
 
 ## Dataset
 
-- **Human-written Articles**: Collected from various online sources using a custom web scraper.
+- **Human-written Articles**: Collected from various sources.
 - **AI-generated Articles**: Generated using GPT-4o, Claude-3-haiku-20240307, and Mistral-7B-Instruct-v0.2.
-- **Genres**: News and Opinion articles were used for training and evaluation.
+- **Genres**: News articles were used for training and evaluation, and opinion articles were used for testing only.
 
 ## Structure
+```
+ai-classifier/
+├── app/
+│   ├── app.py                  # Flask app for serving the web interface
+│   ├── static/
+│   │   └── style.css           # Styles for the web app
+│   ├── templates/
+│   │   ├── landing_page.html   # Landing page template
+│   │   └── index.html          # Analysis form page template
+├── models/
+│   ├── binary_classifier.pkl   # Binary classifier (Human vs AI)
+│   ├── tfidf_vectorizer.pkl    # TF-IDF vectorizer for text preprocessing
+│   └── multiclass_bert/        # Fine-tuned BERT model for AI model attribution
+├── requirements.txt            # Python dependencies
+└── README.md                   # Project documentation
+```
 
-- `data/`: Contains scripts for scraping data and generating AI content.
-- `model_trainer.py`: Contains code to train binary and multiclass classifiers.
-- `model_eval.py`: Includes functions for evaluating model performance and generating results.
-- `opinion_scraper.py`: A script to scrape opinion articles from the web.
-- `opinion_merge.py`: Merges scraped opinion data into a single dataset.
-- `news_ai_generator.py`: Generates AI articles based on news topics.
-- `README.md`: This file.
-
-## Setup
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ai-authorship-attribution.git
-   cd ai-authorship-attribution
+## Usage
+- Install dependencies: pip3 install -r requirements.txt
+- To run the flask app: python app.py and open http://127.0.0.1:5000/ in your local browser.
+ 

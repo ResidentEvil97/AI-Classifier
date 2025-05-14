@@ -1,0 +1,107 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f4e7; /* Earthy light background */
+    color: #3e2a47; /* Dark earthy color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Landing Page Styling */
+.landing-container {
+    background-color: #e0d0a1; /* Earthy beige background */
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    width: 70%;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #3e2a47;
+}
+
+p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #3e2a47;
+}
+
+.cta-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    background-color: #4b8e8d; /* Earthy green */
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #366f6b; /* Darker green for hover */
+}
+
+/* Main Form Page Styling */
+form {
+    width: 60%;
+    margin: auto;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+button {
+    padding: 10px 25px;
+    font-size: 1.1rem;
+    background-color: #4b8e8d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #366f6b;
+}
+
+/* Result Styling */
+.result-container {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #3e2a47;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.landing-container, form {
+    animation: fadeIn 1s ease-in-out;
+}

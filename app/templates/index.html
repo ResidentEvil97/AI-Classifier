@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Authorship Attribution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result-container {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>AI Authorship Attribution</h1>
+    <div class="form-container">
+        <form id="textForm">
+            <label for="text">Enter text to analyze:</label><br>
+            <textarea id="text" name="text" placeholder="Type or paste the text here..."></textarea><br>
+            <button type="submit">Analyze Text</button>
+        </form>
+
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script>
+        // To prevent page refresh and ensure the button works repeatedly
+        document.getElementById('textForm').addEventListener('submit', function(e) {
+            e.preventDefault();  // Prevent default form submission (page reload)
+            
+            let text = document.getElementById('text').value;
+            
+            // Use Fetch API to send the text to the server
+            fetch('/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'text=' + encodeURIComponent(text)
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <p><strong>Binary Classification (Human vs AI):</strong> ${data.binary_result}</p>
+                    <p><strong>Multiclass Classification (AI Model Attribution):</strong> ${data.multiclass_result}</p>
+                `;
+            })
+            .catch(error => {
+                // Handle any errors that might occur
+                console.error('Error:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>
